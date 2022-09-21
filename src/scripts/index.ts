@@ -1,7 +1,9 @@
 import DateFnsAdapter from "@date-io/date-fns";
 export {};
 
-const THEMES1 : Array<string> = ["Name", "Created", "Category", "Content", "Dates", "<button class='open-archive'><i class='fa-solid fa-box-archive fa-lg'></i></button> <button class='open-basket'><i class='fa-solid fa-trash fa-lg'></i></button>"];
+const dateFns = new DateFnsAdapter(); 
+
+const THEMES1 : Array<string> = ["Name", "Created", "Category", "Content", "Dates", "<button class='open-archive'><i class='fa-solid fa-box-archive fa-lg' title='archive'></i></button> <button class='open-basket'><i class='fa-solid fa-trash fa-lg' title='basket'></i></button>"];
 const THEMES2 : Array<string> = ["Note Category", "Active", "Archived"];
 const ARCHIVE : Array<string> = ["Name", "Created", "Category", "Content", "Dates", ""];
 const DELETEDNOTES : Array<string> = ["Name", "Created", "Category", "Content", "Dates", ""];
@@ -71,6 +73,38 @@ const CATEGORIES : Array<string> = ["Task", "Random Thought", "Idea"];
 let icon : string = "";
 let rewriteRow : HTMLTableRowElement; 
 
+btn.addEventListener("click", () => {
+    modal.style.display = "block";
+});
+
+btnOpenArchive.addEventListener("click", () => {
+    archiveModal.style.display = "block";
+});
+
+btnOpenBasket.addEventListener("click", () => {
+    basketModal.style.display = "block";
+});
+
+btnCloseBasket.addEventListener("click", () => {
+    basketModal.style.display = "none";
+});
+
+btnCloseArchive.addEventListener("click", () => {
+    archiveModal.style.display = "none";
+});
+
+btnClearBasket.addEventListener("click", () => {
+    deletedNotes.innerHTML = ""; 
+})
+
+span.onclick = function() {
+    modal.style.display = "none";
+}
+
+spanCancel.onclick = function() {
+    rewriteModal.style.display = "none";
+}
+
 const openRewriteNote = (row : HTMLTableRowElement) => {
     rewriteRow = row;
     rewriteModal.style.display = "block";
@@ -124,7 +158,7 @@ const sortMainTable = () => {
     createTable(rows, mainNotes, "active");
 } 
 
-const eventRow = (e : Event, tr: HTMLTableRowElement) => {
+const eventNoteToMainTable = (e : Event, tr: HTMLTableRowElement) => {
     let elem = e.target as HTMLElement;
     if (elem.classList[1] === "fa-file-arrow-up") {
         tr.classList.remove("archived");
@@ -214,7 +248,7 @@ const createTable = (collection: HTMLCollection | never[], tbody: HTMLElement, a
             })
         } else {
             tr.addEventListener("click", (e) => {
-                eventRow(e, tr);
+                eventNoteToMainTable(e, tr);
             })
         }
         tbody.appendChild(tr);
@@ -231,40 +265,6 @@ function displayMainTable () {
 }
 
 categoriesTable();
-
-const dateFns = new DateFnsAdapter(); 
-
-btn.addEventListener("click", () => {
-    modal.style.display = "block";
-});
-
-btnOpenArchive.addEventListener("click", () => {
-    archiveModal.style.display = "block";
-});
-
-btnOpenBasket.addEventListener("click", () => {
-    basketModal.style.display = "block";
-});
-
-btnCloseBasket.addEventListener("click", () => {
-    basketModal.style.display = "none";
-});
-
-btnCloseArchive.addEventListener("click", () => {
-    archiveModal.style.display = "none";
-});
-
-btnClearBasket.addEventListener("click", () => {
-    deletedNotes.innerHTML = ""; 
-})
-
-span.onclick = function() {
-    modal.style.display = "none";
-}
-
-spanCancel.onclick = function() {
-    rewriteModal.style.display = "none";
-}
 
 const closeTheForm = () => {
     theme.value = "";
@@ -284,7 +284,6 @@ const createDate = () => {
 const checkNoteForDates = (note : string) => {
     const pattern = new RegExp("(([0-2][0-9]|(3)[0-1])(-|/|.)(((0)[0-9])|((1)[0-2]))(-|/|.)([0-9][0-9][0-9][0-9]))|((((0)[0-9])|((1)[0-2]))(-|/|.)([0-2][0-9]|(3)[0-1])(-|/|.)([0-9][0-9][0-9][0-9]))", "g");
     let match = note.match(pattern);
-    console.log(match);
     if (match?.length) {
         datesInNote = match.toString().replace(/,/g, ", ");
     } else {
@@ -294,20 +293,24 @@ const checkNoteForDates = (note : string) => {
 
 addNoteBtn.addEventListener("click", (e) => {
     e.preventDefault();
-    createDate();
-    checkNoteForDates(note.value);
-    chooseRightIcon(select.value);
-    let newArray : Array<string> = [`${icon} ${theme.value}`, myDate, select.value, note.value, datesInNote, lastColumn];
-    let tr = document.createElement("tr");
-    newArray.forEach(name => {
-        let td = document.createElement("td");
-        td.innerHTML = name;
-        tr.appendChild(td);
-    })
-    closeTheForm();
-    tr.classList.add("active");
-    mainNotes.appendChild(tr);
-    categoriesTable();
+    if (theme.value.replace(/ /g, "").length < 1 && note.value.replace(/ /g, "").length < 1) {
+        closeTheForm();
+    } else {
+        createDate();
+        checkNoteForDates(note.value);
+        chooseRightIcon(select.value);
+        let newArray : Array<string> = [`${icon} ${theme.value}`, myDate, select.value, note.value, datesInNote, lastColumn];
+        let tr = document.createElement("tr");
+        newArray.forEach(name => {
+            let td = document.createElement("td");
+            td.innerHTML = name;
+            tr.appendChild(td);
+        })
+        closeTheForm();
+        tr.classList.add("active");
+        mainNotes.appendChild(tr);
+        categoriesTable();
+    }
 })
 
 updateNoteBtn.addEventListener("click", (e) => {
