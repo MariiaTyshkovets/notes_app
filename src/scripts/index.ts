@@ -62,7 +62,7 @@ const contentOfTable = [
     ["<i class='fa-solid fa-brain fa-lg'></i>The theory of evolution", "April 27, 2021", "Random Thought", "The evolution...", "", lastColumn], 
     ["<i class='fa-solid fa-lightbulb fa-lg'></i>New Feature", "May 05, 2021", "Idea", "Implement new ...", "3/5/2021, 5/5/2021", lastColumn], 
     ["<i class='fa-solid fa-basket-shopping fa-lg'></i>Books", "May 14, 2021", "Task", "Frontend", "", lastColumn], 
-    ["<i class='fa-solid fa-basket-shopping fa-lg'></i>Shoping list", "December 20, 2022", "Task", "Toys, presents", "", lastColumn], 
+    ["<i class='fa-solid fa-basket-shopping fa-lg'></i>Shoping list", "December 20, 2021", "Task", "Toys, presents", "", lastColumn], 
     ["<i class='fa-solid fa-brain fa-lg'></i>The love", "April 10, 2022", "Random Thought", "Love is kind and hopefull", "", lastColumn], 
     ["<i class='fa-solid fa-lightbulb fa-lg'></i>New project", "June 21, 2022", "Idea", "Create the app with Redux Toolkit", "", lastColumn]
 ]
@@ -83,15 +83,15 @@ const toArchiveOrBasket = (row: HTMLTableRowElement, tbody: HTMLElement , addCla
     let tr = document.createElement("tr");
     tr.innerHTML = row.innerHTML;
     if (addClass === "archived") {
-        tr.children[tr.children.length-1].innerHTML = "<i class='fa-solid fa-file-arrow-up fa-lg' id='unzip' title='unzip the note'></i>";
+        tr.children[tr.children.length-1].innerHTML = "<i class='fa-solid fa-file-arrow-up fa-lg' title='unzip the note'></i>";
     } else {
-        tr.children[tr.children.length-1].innerHTML = "<i class='fa-solid fa-trash-can-arrow-up fa-lg' id='pull-out' title='pull out of the basket'></i>";
+        tr.children[tr.children.length-1].innerHTML = "<i class='fa-solid fa-trash-can-arrow-up fa-lg' title='pull out of the basket'></i>";
     }
     tr.classList.add(addClass);
     tbody.appendChild(tr);
 }
 
-const eventRow = (e : Event, tr: HTMLTableRowElement) => {
+const eventRewriteArchiveBasket = (e : Event, tr: HTMLTableRowElement) => {
     let elem = e.target as HTMLElement;
     switch (elem.classList[1]) {
         case "fa-pen":
@@ -109,18 +109,36 @@ const eventRow = (e : Event, tr: HTMLTableRowElement) => {
             categoriesTable();
             displayMainTable();              
             break;
-        case "fa-file-arrow-up":
-            tr.classList.remove("archived");
-            tr.classList.add("active");
-            categoriesTable();
-            displayMainTable();
-        case "fa-trash-can-arrow-up":
-            tr.classList.remove("deleted");
-            tr.classList.add("active");
-            categoriesTable();
-            displayMainTable();
         default:
             break;
+    }
+}
+
+const sortMainTable = () => {
+    let rows = [].slice.call(mainNotes.querySelectorAll(".active"));
+    rows.sort(function (a:HTMLTableRowElement, b:HTMLTableRowElement) : any {
+        let dateA : number = new Date(a.cells[1].innerHTML).valueOf();
+        let dateB : number = new Date(b.cells[1].innerHTML).valueOf();
+        return dateA - dateB;
+    });
+    createTable(rows, mainNotes, "active");
+} 
+
+const eventRow = (e : Event, tr: HTMLTableRowElement) => {
+    let elem = e.target as HTMLElement;
+    if (elem.classList[1] === "fa-file-arrow-up") {
+        tr.classList.remove("archived");
+        tr.classList.add("active");
+        displayMainTable();
+        sortMainTable();
+        categoriesTable();
+    }
+    if (elem.classList[1] === "fa-trash-can-arrow-up") {
+        tr.classList.remove("deleted");
+        tr.classList.add("active");
+        displayMainTable();
+        sortMainTable();
+        categoriesTable();
     }
 }
 
@@ -131,7 +149,7 @@ contentOfTable.forEach((block) => {
     })
     tr.classList.add("active");
     tr.addEventListener("click", (e) => {
-        eventRow(e, tr)
+        eventRewriteArchiveBasket(e, tr)
     })
     mainNotes.appendChild(tr);
 })
@@ -174,7 +192,7 @@ function categoriesTable() {
     })
 }
 
-const createTable = (collection: HTMLCollection, tbody: HTMLElement, addClass: string) => {
+const createTable = (collection: HTMLCollection | never[], tbody: HTMLElement, addClass: string) => {
     let newTable : Array<string> = [];
     for (let i = 0; i < collection.length; i++) {
         let row : string = collection[i].innerHTML;
@@ -190,9 +208,15 @@ const createTable = (collection: HTMLCollection, tbody: HTMLElement, addClass: s
         let tr = document.createElement("tr");
         tr.innerHTML = item;
         tr.classList.add(addClass);
-        tr.addEventListener("click", (e) => {
-            eventRow(e, tr);
-        })
+        if (addClass === "active") {
+            tr.addEventListener("click", (e) => {
+                eventRewriteArchiveBasket(e, tr);
+            })
+        } else {
+            tr.addEventListener("click", (e) => {
+                eventRow(e, tr);
+            })
+        }
         tbody.appendChild(tr);
     })
 }
@@ -258,9 +282,14 @@ const createDate = () => {
 }
 
 const checkNoteForDates = (note : string) => {
-    const pattern = new RegExp("(([0-2][0-9]|(3)[0-1])(-|/|.)(((0)[0-9])|((1)[0-2]))(-|/|.)([0-9][0-9][0-9][0-9]))|((((0)[0-9])|((1)[0-2]))(-|/|.)([0-2][0-9]|(3)[0-1])(-|/|.)([0-9][0-9][0-9][0-9]))");
+    const pattern = new RegExp("(([0-2][0-9]|(3)[0-1])(-|/|.)(((0)[0-9])|((1)[0-2]))(-|/|.)([0-9][0-9][0-9][0-9]))|((((0)[0-9])|((1)[0-2]))(-|/|.)([0-2][0-9]|(3)[0-1])(-|/|.)([0-9][0-9][0-9][0-9]))", "g");
     let match = note.match(pattern);
     console.log(match);
+    if (match?.length) {
+        datesInNote = match.toString().replace(/,/g, ", ");
+    } else {
+        datesInNote = "";
+    }
 }
 
 addNoteBtn.addEventListener("click", (e) => {
