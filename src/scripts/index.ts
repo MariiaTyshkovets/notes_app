@@ -308,6 +308,9 @@ addNoteBtn.addEventListener("click", (e) => {
         })
         closeTheForm();
         tr.classList.add("active");
+        tr.addEventListener("click", (e) => {
+            eventRewriteArchiveBasket(e, tr);
+        })
         mainNotes.appendChild(tr);
         categoriesTable();
     }
