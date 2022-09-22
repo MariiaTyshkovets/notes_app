@@ -1,0 +1,132 @@
+@import "./reset.css"; 
+@import "./modal.css";
+
+body {
+    color: black;
+}
+
+.wrapper {
+    padding: 10px 20px;
+}
+
+i {
+    margin-right: 8px;
+}
+
+.notes {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.notes td:last-child, .notes th:last-child {
+    width: 100px;
+}
+
+.notes td:last-child i,
+.notes th:last-child i,
+.deleted-notes__tbody td:last-child i,
+.archived-notes__tbody td:last-child i {
+    opacity: 0.6;
+    cursor: pointer;
+}
+
+.notes td:last-child i:hover, .notes th:last-child i:hover,
+.deleted-notes__tbody td:last-child i:hover,
+.archived-notes__tbody td:last-child i:hover {
+    opacity: 1;
+}
+
+.notes td:last-child i:active,
+.notes th:last-child i:active,
+.deleted-notes__tbody td:last-child i:active,
+.archived-notes__tbody td:last-child i:active {
+    opacity: 0.7;
+}
+
+.notes th:last-child {
+    text-align: right;
+}
+
+table {
+    width: 100%;
+    margin-bottom: 20px;
+    border-collapse: separate;
+    border-spacing: 0 10px;
+}
+
+th:first-child {
+    border-bottom-left-radius: 4px;
+    border-top-left-radius: 4px;
+}
+
+th:last-child {
+    border-bottom-right-radius: 4px;
+    border-top-right-radius: 4px;
+}
+
+th {
+    text-align: center;
+    font-weight: 600;
+    color: white;
+    background-color: rgba(55, 55, 55, .7);
+}
+
+th {
+    padding: 6px;
+}
+
+tr {
+    box-shadow: rgba(110, 110, 110, .2) 0 -25px 18px -14px inset,rgba(110, 110, 110, .15) 0 1px 2px,rgba(110, 110, 110, .15) 0 2px 4px,rgba(220, 220, 220, .15) 0 4px 8px,rgba(220, 220, 220, .15) 0 8px 16px,rgba(220, 220, 220, .15) 0 16px 32px;
+}
+
+td {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 100px; 
+    text-align: center;
+    vertical-align: middle;
+    background-color: rgba(230, 230, 230);
+    padding: 10px 4px;
+}
+
+tbody tr {
+    padding: 5px 0;
+}
+
+tr td:first-child {
+    text-align: left;
+    padding-left: 20px;
+}
+
+.btn {
+    margin-right: 5px;
+    background-color: rgb(240, 240, 240);
+    border-radius: 100px;
+    box-shadow: rgba(55, 55, 55, .2) 0 -25px 18px -14px inset,rgba(55, 55, 55, .15) 0 1px 2px,rgba(55, 55, 55, .15) 0 2px 4px,rgba(55, 55, 55, .15) 0 4px 8px,rgba(55, 55, 55, .15) 0 8px 16px,rgba(55, 55, 55, .15) 0 16px 32px;
+    cursor: pointer;
+    display: inline-block;
+    padding: 7px 20px;
+    text-align: center;
+    text-decoration: none;
+    transition: all 250ms;
+    border: 0;
+    font-size: 16px;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    margin-left: 10px;
+    min-width: 100px;
+}
+
+.btn:hover {
+  box-shadow: rgba(55, 55, 55,.35) 0 -25px 18px -14px inset,rgba(55, 55, 55,.25) 0 1px 2px,rgba(55, 55, 55,.25) 0 2px 4px,rgba(55, 55, 55,.25) 0 4px 8px,rgba(55, 55, 55,.25) 0 8px 16px,rgba(55, 55, 55,.25) 0 16px 32px;
+  transform: scale(1.03);
+}
+
+.btn:active {
+    transform: scale(1);
+    box-shadow: rgba(55, 55, 55, .2) 0 -25px 18px -14px inset,rgba(55, 55, 55, .15) 0 1px 2px,rgba(55, 55, 55, .15) 0 2px 4px,rgba(55, 55, 55, .15) 0 4px 8px,rgba(55, 55, 55, .15) 0 8px 16px,rgba(55, 55, 55, .15) 0 16px 32px;
+}
