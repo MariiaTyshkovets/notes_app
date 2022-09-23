@@ -20,7 +20,7 @@ i {
     align-items: flex-end;
 }
 
-.notes td:last-child, .notes th:last-child {
+.notes__table td:last-child, .notes__table th:last-child {
     width: 100px;
 }
 
