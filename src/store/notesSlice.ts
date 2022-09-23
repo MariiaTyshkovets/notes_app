@@ -42,19 +42,21 @@ const notesSlice = createSlice({
     initialState,
     reducers: {
         addNote(state, action: PayloadAction<Note>) {
-            state.list.push({
-                id: new Date().toISOString(),
-                note: {
-                    name: action.payload.name, 
-                    created: new Date().toISOString(),
-                    category: action.payload.category,
-                    content: action.payload.content,
-                    dates: action.payload.dates
-                },
-                active: true,
-                archived: false,
-                deleted: false
-            })
+            if (action.payload.content.length > 0 || action.payload.name.length > 0) {
+                state.list.push({
+                    id: new Date().toISOString(),
+                    note: {
+                        name: action.payload.name, 
+                        created: new Date().toISOString(),
+                        category: action.payload.category,
+                        content: action.payload.content,
+                        dates: action.payload.dates
+                    },
+                    active: true,
+                    archived: false,
+                    deleted: false
+                })
+            }
         },
         rewriteNote(state, action: PayloadAction<Rewrite>) {
             const note = state.list.find(note => note.id === action.payload.rewriteId);
