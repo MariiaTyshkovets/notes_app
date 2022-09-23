@@ -3,7 +3,6 @@ import { useAppDispatch, useAppSelector } from "../../hooks";
 import { rewriteNote } from "../../store/notesSlice";
 import CategorySelect from "../CategorySelect";
 
-
 interface RewriteNoteModalProps {
   handleModal: (item: string, value: Boolean) => void,
   rewriteId: string,
@@ -29,7 +28,7 @@ const RewriteNoteModal: React.FC<RewriteNoteModalProps> = ({handleModal, rewrite
         dates: findNote.note.dates
       });
     }
-  }, []);
+  }, [findNote]);
 
   const inputChange = (value: string, name: string) => {
     let content = "content" ? value : note.content;
