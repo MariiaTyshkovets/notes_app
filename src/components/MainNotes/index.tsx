@@ -1,12 +1,9 @@
 import { useState } from "react";
-// import { useAppDispatch, useAppSelector } from "../../hooks";
-// import { toArchiveNote, toDeleteNote } from "../../store/notesSlice";
 import Archive from "../Archive";
 import Basket from "../Basket";
 import CreateNoteModal from "../CreateNoteModal";
 import RewriteNoteModal from "../RewriteNoteModal";
 import Notes from "./Notes";
-// import RewriteNoteModal from "../RewriteNoteModal";
 
 interface MainNotesProps {
   rightIcon: (category: string) => any
@@ -39,7 +36,7 @@ const MainNotes: React.FC<MainNotesProps> = ({rightIcon}) => {
   }
 
   const checkNoteForDates = (note : string) : string => {
-    const pattern = new RegExp("(([0-2][0-9]|(3)[0-1])(-|/|.)(((0)[0-9])|((1)[0-2]))(-|/|.)([0-9][0-9][0-9][0-9]))|((((0)[0-9])|((1)[0-2]))(-|/|.)([0-2][0-9]|(3)[0-1])(-|/|.)([0-9][0-9][0-9][0-9]))", "g");
+    const pattern = new RegExp("(([0-2][0-9]|(3)[0-1]|[1-9])(-|/|.)([1-9]|((0)[0-9])|((1)[0-2]))(-|/|.)([0-9][0-9][0-9][0-9]))|(([1-9]|((0)[0-9])|((1)[0-2]))(-|/|.)([0-2][0-9]|(3)[0-1]|[1-9])(-|/|.)([0-9][0-9][0-9][0-9]))", "g");
     let match = note.match(pattern);
     let dates = "";
     if (match?.length) {
