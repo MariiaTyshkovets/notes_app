@@ -6,7 +6,7 @@ body {
 }
 
 .wrapper {
-    padding: 10px 20px;
+    padding: 10px 0;
 }
 
 i {
@@ -14,10 +14,19 @@ i {
 }
 
 .notes {
-    margin-bottom: 20px;
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
+    align-items: flex-end;  
+}
+
+.notes, .info {
+    width: 92vw;
+    max-width: 1300px;
+    margin: 0 auto 20px;
+}
+
+.notes__table td, .notes__table th {
+    min-width: 120px;
 }
 
 .notes__table td:last-child, .notes__table th:last-child {
@@ -129,4 +138,54 @@ tr td:first-child {
 .btn:active {
     transform: scale(1);
     box-shadow: rgba(55, 55, 55, .2) 0 -25px 18px -14px inset,rgba(55, 55, 55, .15) 0 1px 2px,rgba(55, 55, 55, .15) 0 2px 4px,rgba(55, 55, 55, .15) 0 4px 8px,rgba(55, 55, 55, .15) 0 8px 16px,rgba(55, 55, 55, .15) 0 16px 32px;
+}
+
+@media (max-width: 768px) {
+
+    .notes table, .deleted-notes table , .archived-notes table {
+        overflow-x: auto;
+        white-space: nowrap;
+        display: block;
+        margin: 0 auto;
+    }
+
+    .notes table {
+        width: 92vw;
+        margin-bottom: 20px;
+    }
+    
+    .notes table thead {
+        display: table;
+        width: 100%;
+    }
+
+    .notes table tbody {
+        display: table;
+        width: 100%;
+    }
+    
+    .modal__content {
+        padding: 40px 0;
+        width: 90%;
+    }
+
+    .modal__content table {
+        width: 80vw;
+    }
+
+    .modal__content .btn:last-child {
+        margin-right: 5vw;
+    }
+
+    .modal__content td, .modal__content th {
+        min-width: 120px;
+    }
+
+    .modal__content td:last-child, .modal__content th:last-child {
+        min-width: 50px;
+    }
+
+    .modal__content form {
+        padding: 0 5vw;
+    }
 }
