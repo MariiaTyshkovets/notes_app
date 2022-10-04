@@ -4,7 +4,7 @@ The application is designed to create notes. You can create, edit, archive, unar
 
 ## Used tools and technology
 
-HTML5, CSS, Font Awesome, JS, React, hooks, Redux Toolkit. 
+HTML5, CSS, Font Awesome, JS, React, hooks, TypeScript, Redux Toolkit. 
 
 You can open this project in your browser: [Notes App](https://mariiatyshkovets.github.io/notes_app/).
 
